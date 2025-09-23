@@ -156,6 +156,38 @@ func WithNow(t time.Time) Option {
 	}
 }
 
+// MaxAge sets an age cap; 0 disables the cap. Returns the client for chaining.
+func (c *Client) MaxAge(years int) *Client {
+	c.maxAgeYears = years
+	return c
+}
+
+// Strict enforces DOB mismatch as a validation error. Returns the client for chaining.
+func (c *Client) Strict(on bool) *Client {
+	c.strict = on
+	return c
+}
+
+// Location sets the time zone used to expose the BirthDate. Returns the client for chaining.
+func (c *Client) Location(loc *time.Location) *Client {
+	if loc != nil {
+		c.loc = loc
+	}
+	return c
+}
+
+// Rules allows callers to extend or override rules. Returns the client for chaining.
+func (c *Client) Rules(r Rules[string]) *Client {
+	c.custom = r
+	return c
+}
+
+// Now overrides the current time (useful for tests). Returns the client for chaining.
+func (c *Client) Now(t time.Time) *Client {
+	c.now = t.In(time.UTC)
+	return c
+}
+
 // Validate runs all checks and returns a Result and an error (if any).
 func (c *Client) Validate(tin string, providedDOB *time.Time) (Result, error) {
 	var res Result

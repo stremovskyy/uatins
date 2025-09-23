@@ -74,7 +74,7 @@ import (
     "time"
 )
 
-// Create a client with custom settings.
+// Create a client with custom settings using functional options.
 validator := uatins.NewClient(
     // Require the provided DOB to match the one encoded in the TIN.
     // If they don't match, Validate will return an ErrDOBMismatch error.
@@ -86,6 +86,26 @@ validator := uatins.NewClient(
     // Set a maximum plausible age for the TIN holder (default is 130).
     uatins.WithMaxAge(120),
 )
+```
+
+#### Alternative: Chain Methods API
+
+As an alternative to functional options, you can use the fluent chain methods API for a more readable configuration style:
+
+```go
+import (
+    "github.com/stremovskyy/uatins"
+    "time"
+)
+
+// Create a client with custom settings using chain methods.
+validator := uatins.NewClient().
+    Strict(true).
+    Location(time.Local).
+    MaxAge(120)
+```
+
+Both approaches produce identical functionality - choose the style that fits your preference.
 
 // Use the configured client...
 // tin := "3036045681"
@@ -115,10 +135,13 @@ var forbid1999 = uatins.Rule[string](func(s string) error {
     return nil
 })
 
-// Create a client with the custom rule.
+// Create a client with the custom rule using functional options.
 validator := uatins.NewClient(
     uatins.WithRules(uatins.Rules[string]{forbid1999}),
 )
+
+// Or using chain methods:
+// validator := uatins.NewClient().Rules(uatins.Rules[string]{forbid1999})
 
 // This TIN has a birth date of 1999-12-31 and will fail validation.
 res, err := validator.Validate("3652412345", nil)
