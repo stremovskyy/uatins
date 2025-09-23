@@ -142,7 +142,6 @@ validator := uatins.NewClient(
 
 // Or using chain methods:
 // validator := uatins.NewClient().Rules(uatins.Rules[string]{forbid1999})
-)
 
 // This TIN has a birth date of 1999-12-31 and will fail validation.
 res, err := validator.Validate("3652412345", nil)
