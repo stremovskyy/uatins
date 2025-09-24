@@ -35,6 +35,7 @@ var (
 	ErrChecksum        = errors.New("tin: checksum failed")
 	ErrBirthOutOfRange = errors.New("tin: birth date not plausible")
 	ErrDOBMismatch     = errors.New("tin: provided DOB does not match encoded date")
+	ErrUnknown         = errors.New("tin: unknown error")
 )
 
 // Error contains context for validation errors.
